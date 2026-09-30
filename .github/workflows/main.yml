@@ -20,9 +20,9 @@ jobs:
       - name: Build
         run: |
           mkdir -p build
-          i686-w64-mingw32-g++ -shared -O2 -o build/RapMusic.asi src/*.cpp \
-            -Iinclude \
-            -static-libgcc -static-libstdc++
+         i686-w64-mingw32-g++ -shared -O2 -o build/RapMusic.asi src/*.cpp \
+  -static-libgcc -static-libstdc++ \
+  -lwinhttp -lbcrypt -lshell32 -lws2_32
 
       - name: Upload ASI
         uses: actions/upload-artifact@v4
