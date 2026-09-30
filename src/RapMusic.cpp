@@ -384,9 +384,10 @@ bool httpRequest(
         request,
         WINHTTP_QUERY_STATUS_CODE |
         WINHTTP_QUERY_FLAG_NUMBER,
+        WINHTTP_HEADER_NAME_BY_INDEX.
         &status,
         &size,
-        nullptr);
+        WINHTTP_NO_HEADER_INDERX);
 
     while (true) {
         DWORD available = 0;
@@ -774,14 +775,16 @@ void authThread() {
     chat("~ RapMusic: Spotify connected successfully.");
 }
 
+DWORD WINAPI authThreadEntry(LPVOID) {
+    authThread();
+    return 0;
+}
+
 void startAuth() {
     HANDLE h = CreateThread(
         nullptr,
         0,
-        [](LPVOID) -> DWORD {
-            authThread();
-            return 0;
-        },
+        authThreadEntry,
         nullptr,
         0,
         nullptr);
