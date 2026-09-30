@@ -1,0 +1,31 @@
+name: Build RapMusic R1
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install MinGW
+        run: |
+          sudo apt update
+          sudo apt install -y mingw-w64
+
+      - name: Build
+        run: |
+          mkdir -p build
+          i686-w64-mingw32-g++ -shared -O2 -o build/RapMusic.asi src/*.cpp \
+            -Iinclude \
+            -static-libgcc -static-libstdc++
+
+      - name: Upload ASI
+        uses: actions/upload-artifact@v4
+        with:
+          name: RapMusic-R1
+          path: build/RapMusic.asi
